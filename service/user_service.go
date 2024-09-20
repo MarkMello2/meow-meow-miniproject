@@ -74,6 +74,7 @@ func (u userService) UserLogin(userReq UserRequest) (*TokenResponse, error) {
 
 	for _, u := range userData {
 		if userReq.Email == u.Email {
+			user.Id = u.Id
 			user.Email = u.Email
 			user.Password = u.Password
 		}
@@ -85,7 +86,7 @@ func (u userService) UserLogin(userReq UserRequest) (*TokenResponse, error) {
 		return nil, echo.NewHTTPError(http.StatusUnauthorized, "Invalid email or password")
 	}
 
-	token, err := createToken(user.Email)
+	token, err := createToken(user.Id, user.Email)
 
 	if err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
@@ -98,12 +99,13 @@ func (u userService) UserLogin(userReq UserRequest) (*TokenResponse, error) {
 	return &tokenData, nil
 }
 
-func createToken(username string) (string, error) {
+func createToken(id int, username string) (string, error) {
 
 	secretKey := []byte("meow-meow")
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
+			"user_id":  id,
 			"username": username,
 			"exp":      time.Now().Add(time.Hour * 24).Unix(),
 		})

@@ -27,12 +27,18 @@ func main() {
 	userService := service.NewUserService(userRepositoryDb)
 	userHandler := handler.NewUserHandler(userService)
 
+	profileRepositoryDb := repository.NewProfileRepositoryDb(db)
+	profileService := service.NewProfielService(profileRepositoryDb)
+	profileHandler := handler.NewProfileHandler(profileService)
+
 	e.POST("/user/register", userHandler.UserRegister)
 	e.POST("/user/login", userHandler.UserLogin)
 
 	r := e.Group("/")
 
 	r.Use(echojwt.JWT([]byte("meow-meow")))
+
+	r.GET("profile", profileHandler.GetProfileById)
 
 	err := e.Start(":8080")
 
