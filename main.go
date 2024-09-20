@@ -39,6 +39,7 @@ func main() {
 	r.Use(echojwt.JWT([]byte("meow-meow")))
 
 	r.GET("profile", profileHandler.GetProfileById)
+	r.PATCH("profile", profileHandler.CreateUserProfile)
 
 	err := e.Start(":8080")
 

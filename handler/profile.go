@@ -30,6 +30,26 @@ func (p profileHandler) GetProfileById(c echo.Context) error {
 	return c.JSON(http.StatusOK, profileRes)
 }
 
+func (p profileHandler) CreateUserProfile(c echo.Context) error {
+	id, err := getUserIdFromToken(c)
+	if err != nil {
+		return err
+	}
+
+	profileReq := service.ProfileRequest{}
+	err = c.Bind(&profileReq)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	err = p.proSrv.CreateUserProfile(profileReq, id)
+	if err != nil {
+		return err
+	}
+
+	return c.String(http.StatusOK, "update success")
+}
+
 func getUserIdFromToken(c echo.Context) (int, error) {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)

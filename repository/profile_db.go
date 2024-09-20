@@ -21,6 +21,23 @@ func (p profileRepositoryDb) GetProfileById(userId int) (*Profile, error) {
 	return &profile, nil
 }
 
-func (p profileRepositoryDb) SaveProfile(profile Profile) (string, error) {
-	return "", nil
+func (p profileRepositoryDb) CreateProfile(profile Profile) error {
+	profileSave := Profile{
+		Id:        profile.Id,
+		FirstName: profile.FirstName,
+		LastName:  profile.LastName,
+		Mobile:    profile.Mobile,
+		Sex:       profile.Sex,
+		Status:    profile.Status,
+		Image:     profile.Image,
+		UserId:    profile.UserId,
+	}
+
+	tx := p.gorm.Save(&profileSave)
+
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
 }

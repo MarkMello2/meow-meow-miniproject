@@ -4,6 +4,8 @@ import (
 	"errors"
 	"meow-meow/repository"
 	"net/http"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -46,6 +48,38 @@ func (p profileService) GetProfileByUserId(userId int) (*ProfileResponse, error)
 	return &resProfile, nil
 }
 
-func (p profileService) SaveProfileByUserId(profileReq ProfileRequest) (string, error) {
-	return "", nil
+func (p profileService) CreateUserProfile(profileReq ProfileRequest, userId int) error {
+	if len(strings.TrimSpace(profileReq.FirstName)) == 0 || len(strings.TrimSpace(profileReq.LastName)) == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "FirstName and LastName is require")
+	}
+
+	if utf8.RuneCountInString(profileReq.Mobile) > 10 {
+		return echo.NewHTTPError(http.StatusBadRequest, "Phone number is too long. It should not exceed 10 digits.")
+	}
+
+	if profileReq.Sex != "M" && profileReq.Sex != "F" {
+		return echo.NewHTTPError(http.StatusBadRequest, "Sex is require and should M or F")
+	}
+
+	proFileDataId, err := p.GetProfileByUserId(userId)
+	if err != nil {
+		return err
+	}
+
+	profileData := repository.Profile{
+		Id:        proFileDataId.Id,
+		FirstName: profileReq.FirstName,
+		LastName:  profileReq.LastName,
+		Mobile:    profileReq.Mobile,
+		Sex:       profileReq.Sex,
+		Status:    "A",
+		UserId:    userId,
+	}
+
+	err = p.proRepo.CreateProfile(profileData)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+	}
+
+	return nil
 }

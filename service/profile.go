@@ -20,5 +20,5 @@ type ProfileRequest struct {
 
 type ProfileService interface {
 	GetProfileByUserId(int) (*ProfileResponse, error)
-	SaveProfileByUserId(ProfileRequest) (string, error)
+	CreateUserProfile(ProfileRequest, int) error
 }
