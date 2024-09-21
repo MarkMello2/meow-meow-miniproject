@@ -7,6 +7,7 @@ import (
 	"meow-meow/service"
 	"net/http"
 
+	"github.com/golang-jwt/jwt/v5"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"gorm.io/driver/postgres"
@@ -37,6 +38,7 @@ func main() {
 	r := e.Group("/")
 
 	r.Use(echojwt.JWT([]byte("meow-meow")))
+	r.Use(userIDMiddleware)
 
 	r.GET("profile", profileHandler.GetProfileById)
 	r.PATCH("profile", profileHandler.CreateUserProfile)
@@ -59,4 +61,20 @@ func initDatabase() *gorm.DB {
 	}
 
 	return db
+}
+
+func userIDMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		user := c.Get("user").(*jwt.Token)
+		claims := user.Claims.(jwt.MapClaims)
+		userId, ok := claims["user_id"].(float64)
+
+		if !ok {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		}
+
+		c.Set("userId", int(userId))
+
+		return next(c)
+	}
 }

@@ -4,7 +4,6 @@ import (
 	"meow-meow/service"
 	"net/http"
 
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,10 +16,7 @@ func NewProfileHandler(proSrv service.ProfileService) profileHandler {
 }
 
 func (p profileHandler) GetProfileById(c echo.Context) error {
-	id, err := getUserIdFromToken(c)
-	if err != nil {
-		return err
-	}
+	id := c.Get("userId").(int)
 
 	profileRes, err := p.proSrv.GetProfileByUserId(id)
 	if err != nil {
@@ -31,13 +27,10 @@ func (p profileHandler) GetProfileById(c echo.Context) error {
 }
 
 func (p profileHandler) CreateUserProfile(c echo.Context) error {
-	id, err := getUserIdFromToken(c)
-	if err != nil {
-		return err
-	}
+	id := c.Get("userId").(int)
 
 	profileReq := service.ProfileRequest{}
-	err = c.Bind(&profileReq)
+	err := c.Bind(&profileReq)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
@@ -48,17 +41,4 @@ func (p profileHandler) CreateUserProfile(c echo.Context) error {
 	}
 
 	return c.String(http.StatusOK, "update success")
-}
-
-func getUserIdFromToken(c echo.Context) (int, error) {
-	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	userId, ok := claims["user_id"].(float64)
-
-	if !ok {
-		return 0, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
-	}
-
-	id := int(userId)
-	return id, nil
 }
