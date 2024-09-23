@@ -1,0 +1,10 @@
+CREATE TABLE categories (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    description VARCHAR(1024),
+    image VARCHAR(255),
+    created_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3),
+    updated_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3),
+    deleted_at TIMESTAMP(3)
+);
+
