@@ -82,6 +82,11 @@ func (a addressService) CreateAddress(addressRequest AddressRequest, userId int,
 	return nil
 }
 
-func (a addressService) DeleteAddressById(int) error {
+func (a addressService) DeleteAddressById(id int) error {
+	err := a.addRepo.DeleteAddress(id)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+	}
+
 	return nil
 }

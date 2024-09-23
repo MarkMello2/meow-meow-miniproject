@@ -50,6 +50,7 @@ func main() {
 	r.GET("address", addressHandler.GetAddressByUserId)
 	r.POST("address", addressHandler.CreateAddress)
 	r.PATCH("address/:id", addressHandler.UpdateAddressById)
+	r.DELETE("address/:id", addressHandler.DeleteAddressById)
 
 	err := e.Start(":8080")
 

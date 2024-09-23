@@ -65,3 +65,18 @@ func (a addressHandler) GetAddressByUserId(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, addressRes)
 }
+
+func (a addressHandler) DeleteAddressById(c echo.Context) error {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	err = a.addSrv.DeleteAddressById(id)
+	if err != nil {
+		return err
+	}
+
+	return c.String(http.StatusOK, "Delete Address Successful")
+}

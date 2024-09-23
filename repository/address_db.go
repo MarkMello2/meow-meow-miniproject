@@ -18,7 +18,7 @@ func NewAddressRepositoryDb(gorm *gorm.DB) AddressRepository {
 func (a addressRepositoryDb) GetAddress(userId int) ([]Address, error) {
 	address := []Address{}
 
-	tx := a.gorm.Table("address").Where("user_id = ?", userId).Find(&address)
+	tx := a.gorm.Where("user_id = ?", userId).Order("id").Find(&address)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -37,7 +37,7 @@ func (a addressRepositoryDb) SaveAddress(addressData Address) error {
 		Type:      addressData.Type,
 	}
 
-	tx := a.gorm.Table("address").Save(&addressSave)
+	tx := a.gorm.Save(&addressSave)
 
 	if tx.Error != nil {
 		return tx.Error
@@ -47,7 +47,7 @@ func (a addressRepositoryDb) SaveAddress(addressData Address) error {
 }
 
 func (a addressRepositoryDb) UpdateAdress(addressData Address) error {
-	tx := a.gorm.Table("address").Select("FirstName", "LastName", "Mobile", "Address", "UserId", "Type").Where("id = ?", addressData.Id).Updates(Address{
+	tx := a.gorm.Select("FirstName", "LastName", "Mobile", "Address", "UserId", "Type").Where("id = ?", addressData.Id).Updates(Address{
 		FirstName: addressData.FirstName,
 		LastName:  addressData.LastName,
 		Mobile:    addressData.Mobile,
@@ -68,5 +68,10 @@ func (a addressRepositoryDb) UpdateAdress(addressData Address) error {
 }
 
 func (a addressRepositoryDb) DeleteAddress(id int) error {
+	tx := a.gorm.Delete(&Address{Id: id})
+	if tx.Error != nil {
+		return tx.Error
+	}
+
 	return nil
 }
