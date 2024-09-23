@@ -32,6 +32,10 @@ func main() {
 	profileService := service.NewProfielService(profileRepositoryDb)
 	profileHandler := handler.NewProfileHandler(profileService)
 
+	addressRepositoryDb := repository.NewAddressRepositoryDb(db)
+	addressService := service.NewAddressService(addressRepositoryDb)
+	addressHandler := handler.NewAddressHandler(addressService)
+
 	e.POST("/user/register", userHandler.UserRegister)
 	e.POST("/user/login", userHandler.UserLogin)
 
@@ -43,6 +47,9 @@ func main() {
 	r.GET("profile", profileHandler.GetProfileById)
 	r.PATCH("profile", profileHandler.CreateUserProfile)
 
+	r.POST("address", addressHandler.CreateAddress)
+	r.PATCH("address/:id", addressHandler.UpdateAddressById)
+
 	err := e.Start(":8080")
 
 	if err != http.ErrServerClosed {
@@ -52,7 +59,7 @@ func main() {
 
 func initDatabase() *gorm.DB {
 
-	dsn := "host=localhost user=user password=password dbname=shopping_db port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	dsn := "host=localhost user=user password=password dbname=shopping_db port=5432 sslmode=disable TimeZone=Asia/Bangkok"
 	dial := postgres.Open(dsn)
 	db, err := gorm.Open(dial)
 
