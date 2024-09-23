@@ -40,6 +40,10 @@ func main() {
 	categoryService := service.NewCategoryService(categoryRepositoryDb)
 	categoryHandler := handler.NewCategoryHandler(categoryService)
 
+	productRepositoryDb := repository.NewProductRepositoryDb(db)
+	productService := service.NewProductService(productRepositoryDb)
+	productHandler := handler.NewProductHandler(productService)
+
 	e.POST("/user/register", userHandler.UserRegister)
 	e.POST("/user/login", userHandler.UserLogin)
 
@@ -57,6 +61,7 @@ func main() {
 	r.DELETE("address/:id", addressHandler.DeleteAddressById)
 
 	r.GET("product/category", categoryHandler.GetAllCategory)
+	r.GET("product/category/:id", productHandler.GetProductByCategoryId)
 
 	err := e.Start(":8080")
 
