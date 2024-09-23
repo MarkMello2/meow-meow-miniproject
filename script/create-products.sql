@@ -6,11 +6,11 @@ CREATE TABLE products (
     price FLOAT,                          
     rating BIGINT,                        
     image VARCHAR(255),                   
-    category_id BIGINT,                  
+    category_id BIGINT,  
+    mall_id BIGINT,                
     created_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3), 
     updated_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3),  
     deleted_at TIMESTAMP(3),
-    CONSTRAINT fk_category
-        FOREIGN KEY (category_id) 
-        REFERENCES categories(id)
+    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id),
+    CONSTRAINT fk_mall FOREIGN KEY (mall_id) REFERENCES malls(id)
 );
