@@ -36,6 +36,10 @@ func main() {
 	addressService := service.NewAddressService(addressRepositoryDb)
 	addressHandler := handler.NewAddressHandler(addressService)
 
+	categoryRepositoryDb := repository.NewCategoryRepositoryDb(db)
+	categoryService := service.NewCategoryService(categoryRepositoryDb)
+	categoryHandler := handler.NewCategoryHandler(categoryService)
+
 	e.POST("/user/register", userHandler.UserRegister)
 	e.POST("/user/login", userHandler.UserLogin)
 
@@ -51,6 +55,8 @@ func main() {
 	r.POST("address", addressHandler.CreateAddress)
 	r.PATCH("address/:id", addressHandler.UpdateAddressById)
 	r.DELETE("address/:id", addressHandler.DeleteAddressById)
+
+	r.GET("product/category", categoryHandler.GetAllCategory)
 
 	err := e.Start(":8080")
 
