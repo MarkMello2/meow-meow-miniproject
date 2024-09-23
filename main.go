@@ -47,6 +47,7 @@ func main() {
 	r.GET("profile", profileHandler.GetProfileById)
 	r.PATCH("profile", profileHandler.CreateUserProfile)
 
+	r.GET("address", addressHandler.GetAddressByUserId)
 	r.POST("address", addressHandler.CreateAddress)
 	r.PATCH("address/:id", addressHandler.UpdateAddressById)
 

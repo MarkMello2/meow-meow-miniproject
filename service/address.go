@@ -15,6 +15,7 @@ type AddressResponse struct {
 	Mobile    string `json:"mobile"`
 	Address   string `json:"address"`
 	Type      int    `json:"type"`
+	UserId    int    `json:"user_id"`
 }
 
 type AddressService interface {

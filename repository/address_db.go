@@ -16,7 +16,14 @@ func NewAddressRepositoryDb(gorm *gorm.DB) AddressRepository {
 }
 
 func (a addressRepositoryDb) GetAddress(userId int) ([]Address, error) {
-	return nil, nil
+	address := []Address{}
+
+	tx := a.gorm.Table("address").Where("user_id = ?", userId).Find(&address)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return address, nil
 }
 
 func (a addressRepositoryDb) SaveAddress(addressData Address) error {

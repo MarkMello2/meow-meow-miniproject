@@ -17,8 +17,27 @@ func NewAddressService(addRepo repository.AddressRepository) AddressService {
 	return addressService{addRepo: addRepo}
 }
 
-func (a addressService) GetAddressByUserId(int) ([]AddressResponse, error) {
-	return nil, nil
+func (a addressService) GetAddressByUserId(userId int) ([]AddressResponse, error) {
+	addressDataDb, err := a.addRepo.GetAddress(userId)
+	if err != nil {
+		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+	}
+
+	res := []AddressResponse{}
+
+	for _, data := range addressDataDb {
+		res = append(res, AddressResponse{
+			Id:        data.Id,
+			FirstName: data.FirstName,
+			LastName:  data.LastName,
+			Mobile:    data.Mobile,
+			Address:   data.Address,
+			Type:      data.Type,
+			UserId:    data.UserId,
+		})
+	}
+
+	return res, nil
 }
 
 func (a addressService) CreateAddress(addressRequest AddressRequest, userId int, idAddress int) error {

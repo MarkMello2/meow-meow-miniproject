@@ -54,3 +54,14 @@ func (a addressHandler) UpdateAddressById(c echo.Context) error {
 
 	return c.String(http.StatusOK, "Update Address Successful")
 }
+
+func (a addressHandler) GetAddressByUserId(c echo.Context) error {
+	userId := c.Get("userId").(int)
+
+	addressRes, err := a.addSrv.GetAddressByUserId(userId)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, addressRes)
+}
