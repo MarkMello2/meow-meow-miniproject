@@ -12,10 +12,20 @@ type ProductResponse struct {
 	MallId      int     `json:"mall_id"`
 }
 
+type ProductResponseRec struct {
+	Id          int     `json:"id"`
+	Code        string  `json:"code"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Price       float32 `json:"price"`
+	Rating      int     `json:"rating"`
+	Image       string  `json:"image"`
+}
+
 type ProductService interface {
 	GetAllProduct() ([]ProductResponse, error)
 	GetProductById(int) ([]ProductResponse, error)
 	GetProductByCategoryId(int) ([]ProductResponse, error)
 	GetProductByMallId(int) ([]ProductResponse, error)
-	GetProductRecommended() ([]ProductResponse, error)
+	GetProductRecommended() ([]ProductResponseRec, error)
 }

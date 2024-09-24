@@ -126,7 +126,7 @@ func (p productService) GetProductByMallId(mallId int) ([]ProductResponse, error
 	return res, nil
 }
 
-func (p productService) GetProductRecommended() ([]ProductResponse, error) {
+func (p productService) GetProductRecommended() ([]ProductResponseRec, error) {
 	pathImg := os.Getenv("IMG_PATH_LOCAL")
 
 	productDataDb, err := p.proRepo.GetRecommended()
@@ -134,10 +134,10 @@ func (p productService) GetProductRecommended() ([]ProductResponse, error) {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
 	}
 
-	res := []ProductResponse{}
+	res := []ProductResponseRec{}
 
 	for _, data := range productDataDb {
-		res = append(res, ProductResponse{
+		res = append(res, ProductResponseRec{
 			Id:          data.Id,
 			Code:        data.Code,
 			Name:        data.Name,
