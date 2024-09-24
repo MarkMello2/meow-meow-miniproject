@@ -14,6 +14,6 @@ type ProductResponse struct {
 
 type ProductService interface {
 	GetAllProduct() ([]ProductResponse, error)
-	GetProductById(int) (*ProductResponse, error)
+	GetProductById(int) ([]ProductResponse, error)
 	GetProductByCategoryId(int) ([]ProductResponse, error)
 }

@@ -11,11 +11,25 @@ func NewProductRepositoryDb(gorm *gorm.DB) ProductRepository {
 }
 
 func (p productRepositoryDb) GetAll() ([]Product, error) {
-	return nil, nil
+	product := []Product{}
+	tx := p.gorm.Order("id").Find(&product)
+
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return product, nil
 }
 
-func (p productRepositoryDb) GetById(productId int) (*Product, error) {
-	return nil, nil
+func (p productRepositoryDb) GetById(productId int) ([]Product, error) {
+	product := []Product{}
+
+	tx := p.gorm.First(&product, productId)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return product, nil
 }
 
 func (p productRepositoryDb) GetByCategoryId(categoryId int) ([]Product, error) {

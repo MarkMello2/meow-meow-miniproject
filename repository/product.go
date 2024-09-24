@@ -23,6 +23,6 @@ type Product struct {
 
 type ProductRepository interface {
 	GetAll() ([]Product, error)
-	GetById(int) (*Product, error)
+	GetById(int) ([]Product, error)
 	GetByCategoryId(int) ([]Product, error)
 }

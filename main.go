@@ -55,6 +55,8 @@ func main() {
 	e.POST("/user/register", userHandler.UserRegister)
 	e.POST("/user/login", userHandler.UserLogin)
 
+	e.GET("/product", productHandler.GetAllProduct)
+	e.GET("/product/:id", productHandler.GetProductById)
 	e.GET("/product/category", categoryHandler.GetAllCategory)
 	e.GET("/product/category/:id", productHandler.GetProductByCategoryId)
 

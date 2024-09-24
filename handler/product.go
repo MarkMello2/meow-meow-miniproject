@@ -29,3 +29,26 @@ func (p productHandler) GetProductByCategoryId(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, res)
 }
+
+func (p productHandler) GetAllProduct(c echo.Context) error {
+	res, err := p.proSrv.GetAllProduct()
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, res)
+}
+
+func (p productHandler) GetProductById(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	res, err := p.proSrv.GetProductById(id)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, res)
+}
