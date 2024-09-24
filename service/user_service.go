@@ -4,6 +4,7 @@ import (
 	"errors"
 	"meow-meow/repository"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -100,8 +101,9 @@ func (u userService) UserLogin(userReq UserRequest) (*TokenResponse, error) {
 }
 
 func createToken(id int, username string) (string, error) {
+	jwtSecret := os.Getenv("JWT_SECRET_KEY")
 
-	secretKey := []byte("meow-meow")
+	secretKey := []byte(jwtSecret)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{

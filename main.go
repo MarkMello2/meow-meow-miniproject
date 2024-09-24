@@ -6,8 +6,10 @@ import (
 	"meow-meow/repository"
 	"meow-meow/service"
 	"net/http"
+	"os"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/joho/godotenv"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"gorm.io/driver/postgres"
@@ -20,9 +22,13 @@ type User struct {
 }
 
 func main() {
+	initEnv()
+
 	e := echo.New()
 
 	db := initDatabase()
+
+	jwtSecret := os.Getenv("JWT_SECRET_KEY")
 
 	userRepositoryDb := repository.NewUserRepository(db)
 	userService := service.NewUserService(userRepositoryDb)
@@ -44,15 +50,17 @@ func main() {
 	productService := service.NewProductService(productRepositoryDb)
 	productHandler := handler.NewProductHandler(productService)
 
+	e.Static("/static", "assets")
+
 	e.POST("/user/register", userHandler.UserRegister)
 	e.POST("/user/login", userHandler.UserLogin)
 
-	e.GET("product/category", categoryHandler.GetAllCategory)
-	e.GET("product/category/:id", productHandler.GetProductByCategoryId)
+	e.GET("/product/category", categoryHandler.GetAllCategory)
+	e.GET("/product/category/:id", productHandler.GetProductByCategoryId)
 
 	r := e.Group("/")
 
-	r.Use(echojwt.JWT([]byte("meow-meow")))
+	r.Use(echojwt.JWT([]byte(jwtSecret)))
 	r.Use(userIDMiddleware)
 
 	r.GET("profile", profileHandler.GetProfileById)
@@ -96,5 +104,12 @@ func userIDMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		c.Set("userId", int(userId))
 
 		return next(c)
+	}
+}
+
+func initEnv() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
 	}
 }
