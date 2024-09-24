@@ -47,6 +47,9 @@ func main() {
 	e.POST("/user/register", userHandler.UserRegister)
 	e.POST("/user/login", userHandler.UserLogin)
 
+	e.GET("product/category", categoryHandler.GetAllCategory)
+	e.GET("product/category/:id", productHandler.GetProductByCategoryId)
+
 	r := e.Group("/")
 
 	r.Use(echojwt.JWT([]byte("meow-meow")))
@@ -59,9 +62,6 @@ func main() {
 	r.POST("address", addressHandler.CreateAddress)
 	r.PATCH("address/:id", addressHandler.UpdateAddressById)
 	r.DELETE("address/:id", addressHandler.DeleteAddressById)
-
-	r.GET("product/category", categoryHandler.GetAllCategory)
-	r.GET("product/category/:id", productHandler.GetProductByCategoryId)
 
 	err := e.Start(":8080")
 
