@@ -3,6 +3,7 @@ package service
 import (
 	"meow-meow/repository"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 )
@@ -24,6 +25,8 @@ func (p productService) GetProductById(productId int) (*ProductResponse, error) 
 }
 
 func (p productService) GetProductByCategoryId(categoryId int) ([]ProductResponse, error) {
+	pathImg := os.Getenv("IMG_PATH_LOCAL")
+
 	productDataDb, err := p.proRepo.GetByCategoryId(categoryId)
 	if err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
@@ -39,7 +42,7 @@ func (p productService) GetProductByCategoryId(categoryId int) ([]ProductRespons
 			Description: data.Description,
 			Price:       data.Price,
 			Rating:      data.Rating,
-			Image:       data.Image,
+			Image:       pathImg + data.Image,
 			CategoryId:  data.CategoryId,
 			MallId:      data.MallId,
 		})

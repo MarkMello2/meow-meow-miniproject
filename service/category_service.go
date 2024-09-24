@@ -3,6 +3,7 @@ package service
 import (
 	"meow-meow/repository"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 )
@@ -16,6 +17,8 @@ func NewCategoryService(cateRepo repository.CategoryRepository) CatagoryService 
 }
 
 func (c categoryService) GetAllCategory() ([]CategoryResponse, error) {
+	pathImg := os.Getenv("IMG_PATH_LOCAL")
+
 	cateData, err := c.cateRepo.GetAll()
 	if err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
@@ -28,7 +31,7 @@ func (c categoryService) GetAllCategory() ([]CategoryResponse, error) {
 			Id:          data.Id,
 			Name:        data.Name,
 			Description: data.Description,
-			Image:       data.Image,
+			Image:       pathImg + data.Image,
 		})
 	}
 
