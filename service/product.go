@@ -17,4 +17,5 @@ type ProductService interface {
 	GetProductById(int) ([]ProductResponse, error)
 	GetProductByCategoryId(int) ([]ProductResponse, error)
 	GetProductByMallId(int) ([]ProductResponse, error)
+	GetProductRecommended() ([]ProductResponse, error)
 }

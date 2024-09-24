@@ -51,3 +51,14 @@ func (p productRepositoryDb) GetByMallId(mallId int) ([]Product, error) {
 	}
 	return product, nil
 }
+
+func (p productRepositoryDb) GetRecommended() ([]Product, error) {
+	product := []Product{}
+	tx := p.gorm.Order("RANDOM()").Limit(10).Find(&product)
+
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return product, nil
+}

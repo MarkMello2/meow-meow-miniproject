@@ -66,3 +66,12 @@ func (p productHandler) GetProductByMallId(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, res)
 }
+
+func (p productHandler) GetProductRecommended(c echo.Context) error {
+	res, err := p.proSrv.GetProductRecommended()
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, res)
+}

@@ -26,4 +26,5 @@ type ProductRepository interface {
 	GetById(int) ([]Product, error)
 	GetByCategoryId(int) ([]Product, error)
 	GetByMallId(int) ([]Product, error)
+	GetRecommended() ([]Product, error)
 }

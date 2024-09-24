@@ -73,6 +73,8 @@ func main() {
 
 	e.GET("/product/banner", bannerHandler.GetBannerAll)
 
+	e.GET("/product/recommended", productHandler.GetProductRecommended)
+
 	r := e.Group("/")
 
 	r.Use(echojwt.JWT([]byte(jwtSecret)))
