@@ -54,6 +54,10 @@ func main() {
 	mallService := service.NewMallService(mallRepositoryDb)
 	mallHandler := handler.NewMallHandler(mallService)
 
+	bannerRepositoryDb := repository.NewBannerRepositoryDb(db)
+	bannerService := service.NewBannerService(bannerRepositoryDb)
+	bannerHandler := handler.NewBannerHandler(bannerService)
+
 	e.Static("/static", "assets")
 
 	e.POST("/user/register", userHandler.UserRegister)
@@ -66,6 +70,8 @@ func main() {
 
 	e.GET("/product/shopping-mall", mallHandler.GetAllShoppingMall)
 	e.GET("/product/shopping-mall/:id", productHandler.GetProductByMallId)
+
+	e.GET("/product/banner", bannerHandler.GetBannerAll)
 
 	r := e.Group("/")
 
