@@ -41,3 +41,13 @@ func (p productRepositoryDb) GetByCategoryId(categoryId int) ([]Product, error) 
 	}
 	return product, nil
 }
+
+func (p productRepositoryDb) GetByMallId(mallId int) ([]Product, error) {
+	product := []Product{}
+
+	tx := p.gorm.Where("mall_id = ?", mallId).Order("id").Find(&product)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return product, nil
+}

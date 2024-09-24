@@ -16,4 +16,5 @@ type ProductService interface {
 	GetAllProduct() ([]ProductResponse, error)
 	GetProductById(int) ([]ProductResponse, error)
 	GetProductByCategoryId(int) ([]ProductResponse, error)
+	GetProductByMallId(int) ([]ProductResponse, error)
 }

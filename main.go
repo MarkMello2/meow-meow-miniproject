@@ -62,10 +62,10 @@ func main() {
 	e.GET("/product", productHandler.GetAllProduct)
 	e.GET("/product/:id", productHandler.GetProductById)
 	e.GET("/product/category/:id", productHandler.GetProductByCategoryId)
-
 	e.GET("/product/category", categoryHandler.GetAllCategory)
 
 	e.GET("/product/shopping-mall", mallHandler.GetAllShoppingMall)
+	e.GET("/product/shopping-mall/:id", productHandler.GetProductByMallId)
 
 	r := e.Group("/")
 

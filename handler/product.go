@@ -52,3 +52,17 @@ func (p productHandler) GetProductById(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, res)
 }
+
+func (p productHandler) GetProductByMallId(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	res, err := p.proSrv.GetProductByMallId(id)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, res)
+}

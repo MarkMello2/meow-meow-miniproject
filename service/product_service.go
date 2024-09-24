@@ -99,3 +99,29 @@ func (p productService) GetProductByCategoryId(categoryId int) ([]ProductRespons
 	}
 	return res, nil
 }
+
+func (p productService) GetProductByMallId(mallId int) ([]ProductResponse, error) {
+	pathImg := os.Getenv("IMG_PATH_LOCAL")
+
+	productDataDb, err := p.proRepo.GetByMallId(mallId)
+	if err != nil {
+		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+	}
+
+	res := []ProductResponse{}
+
+	for _, data := range productDataDb {
+		res = append(res, ProductResponse{
+			Id:          data.Id,
+			Code:        data.Code,
+			Name:        data.Name,
+			Description: data.Description,
+			Price:       data.Price,
+			Rating:      data.Rating,
+			Image:       pathImg + data.Image,
+			CategoryId:  data.CategoryId,
+			MallId:      data.MallId,
+		})
+	}
+	return res, nil
+}
