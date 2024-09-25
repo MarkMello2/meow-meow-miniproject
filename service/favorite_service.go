@@ -44,6 +44,11 @@ func (f favoriteService) GetFavoriteByUserId(userId int) ([]FavoriteResponse, er
 }
 
 func (f favoriteService) SaveFavorite(favReq FavoriteRequest, userId int) error {
+
+	if favReq.ProductId == 0 || favReq.Price == 0 || favReq.Quantity == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "ProductId, Price, and Quantity is require")
+	}
+
 	favData := repository.Favorite{
 		ProductId: favReq.ProductId,
 		Price:     favReq.Price,
@@ -52,6 +57,15 @@ func (f favoriteService) SaveFavorite(favReq FavoriteRequest, userId int) error 
 	}
 
 	err := f.favRepo.Save(favData)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+	}
+
+	return nil
+}
+
+func (f favoriteService) DeleteFavoriteById(id int) error {
+	err := f.favRepo.DeleteById(id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
 	}

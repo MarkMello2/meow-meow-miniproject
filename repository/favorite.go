@@ -33,4 +33,5 @@ type FavoriteGet struct {
 type FavoriteRepository interface {
 	GetById(int) ([]FavoriteGet, error)
 	Save(Favorite) error
+	DeleteById(int) error
 }

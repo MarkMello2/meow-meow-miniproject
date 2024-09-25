@@ -94,6 +94,7 @@ func main() {
 
 	r.POST("product/favorite", favouriteHandler.SaveFavorite)
 	r.GET("product/favorite", favouriteHandler.GetFavoriteByUserId)
+	r.DELETE("product/favorite/:id", favouriteHandler.DeleteFavoriteById)
 
 	err := e.Start(":8080")
 

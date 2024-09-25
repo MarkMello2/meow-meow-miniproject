@@ -22,4 +22,5 @@ type FavoriteRequest struct {
 type FavoriteService interface {
 	GetFavoriteByUserId(int) ([]FavoriteResponse, error)
 	SaveFavorite(FavoriteRequest, int) error
+	DeleteFavoriteById(int) error
 }

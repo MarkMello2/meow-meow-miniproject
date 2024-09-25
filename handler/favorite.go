@@ -3,6 +3,7 @@ package handler
 import (
 	"meow-meow/service"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -41,4 +42,18 @@ func (f favoriteHandler) GetFavoriteByUserId(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, res)
+}
+
+func (f favoriteHandler) DeleteFavoriteById(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+
+	err = f.favSrv.DeleteFavoriteById(id)
+	if err != nil {
+		return err
+	}
+
+	return c.String(http.StatusOK, "Delete Favorite Successful")
 }
