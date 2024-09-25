@@ -58,6 +58,10 @@ func main() {
 	bannerService := service.NewBannerService(bannerRepositoryDb)
 	bannerHandler := handler.NewBannerHandler(bannerService)
 
+	favouriteRepositoryDb := repository.NewFavoriteRepositoryDb(db)
+	favouriteService := service.NewFavoriteService(favouriteRepositoryDb)
+	favouriteHandler := handler.NewFavoriteHandler(favouriteService)
+
 	e.Static("/static", "assets")
 
 	e.POST("/user/register", userHandler.UserRegister)
@@ -87,6 +91,9 @@ func main() {
 	r.POST("address", addressHandler.CreateAddress)
 	r.PATCH("address/:id", addressHandler.UpdateAddressById)
 	r.DELETE("address/:id", addressHandler.DeleteAddressById)
+
+	r.POST("product/favorite", favouriteHandler.SaveFavorite)
+	r.GET("product/favorite", favouriteHandler.GetFavoriteByUserId)
 
 	err := e.Start(":8080")
 
