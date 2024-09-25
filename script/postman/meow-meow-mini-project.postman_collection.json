@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "b6027be6-9c6e-4da8-afe6-27433ac2830a",
+		"_postman_id": "ee8237b5-01de-4b31-a437-0df1f72cdf5d",
 		"name": "meow-meow-mini-project",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "16314826"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -22,7 +21,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"RO89mark1234@gmail.com\",\r\n    \"password\": \"markza_007\"\r\n}",
+							"raw": "{\r\n    \"email\": \"RO8912mark@gmail.com\",\r\n    \"password\": \"markza_007\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -54,7 +53,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"RO89mark123@gmail.com\",\r\n    \"password\": \"markza_007\"\r\n}",
+							"raw": "{\r\n    \"email\": \"RO8912mark@gmail.com\",\r\n    \"password\": \"markza_007\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -89,7 +88,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyNDUxODcsInVzZXJfaWQiOjM3LCJ1c2VybmFtZSI6IlJPODltYXJrMTIzQGdtYWlsLmNvbSJ9.FRazkdwHY2FbMKICcoUNKJLhRJypAQyF9zUtO9uaVuw",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjczMzMzNjUsInVzZXJfaWQiOjQsInVzZXJuYW1lIjoiUk84OTEybWFya0BnbWFpbC5jb20ifQ.Sk4XuFMrxdIAHI-pgqblPJZGjjIe6rIpRaVfwS06LbA",
 									"type": "string"
 								}
 							]
@@ -118,7 +117,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyNjQxOTYsInVzZXJfaWQiOjM3LCJ1c2VybmFtZSI6IlJPODltYXJrMTIzQGdtYWlsLmNvbSJ9.vrd1Jzy9GwY8Z0tG71BsMAj1MB__76aR9bhrYGPYqiI",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyNzI5MTEsInVzZXJfaWQiOjMsInVzZXJuYW1lIjoiUk84OW1hcmtAZ21haWwuY29tIn0.dUvMtEtstd4hBxaynUXZBGbJUPL6Y7eLhZ7Hnjohclc",
 									"type": "string"
 								}
 							]
@@ -127,7 +126,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\": \"กฤตนนท์2\",\r\n    \"last_name\": \"สอนสังข์2\",\r\n    \"mobile\": \"0918608574\",\r\n    \"sex\": \"M\"\r\n}",
+							"raw": "{\r\n    \"first_name\": \"Kittanon123\",\r\n    \"last_name\": \"Sonsung123\",\r\n    \"mobile\": \"0817892554\",\r\n    \"sex\": \"M\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -161,7 +160,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxNjI5MzYsInVzZXJfaWQiOjM3LCJ1c2VybmFtZSI6IlJPODltYXJrMTIzQGdtYWlsLmNvbSJ9.XcMK6YF11ChzOLSPHpNW2Gpy8PhAr3ciu2rGit7YQYQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyNzIxODQsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiUk84OW1hcmsxMjM0QGdtYWlsLmNvbSJ9.qqWA1KaCQOVu_1G4Xlgj2ooTyg-pxedrf3vxebMiJj4",
 									"type": "string"
 								}
 							]
@@ -170,7 +169,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\": \"kittanonOrder\",\r\n    \"last_name\": \"sonsungOrder\",\r\n    \"mobile\": \"11110\",\r\n    \"address\": \"36/507\",\r\n    \"type\": 0\r\n}",
+							"raw": "{\r\n    \"first_name\": \"kittanonOrder3\",\r\n    \"last_name\": \"sonsungOrder3\",\r\n    \"mobile\": \"11110\",\r\n    \"address\": \"36/507\",\r\n    \"type\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -199,7 +198,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxNjI5MzYsInVzZXJfaWQiOjM3LCJ1c2VybmFtZSI6IlJPODltYXJrMTIzQGdtYWlsLmNvbSJ9.XcMK6YF11ChzOLSPHpNW2Gpy8PhAr3ciu2rGit7YQYQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyNzIxODQsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiUk84OW1hcmsxMjM0QGdtYWlsLmNvbSJ9.qqWA1KaCQOVu_1G4Xlgj2ooTyg-pxedrf3vxebMiJj4",
 									"type": "string"
 								}
 							]
@@ -208,7 +207,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"first_name\": \"kittanonNew17EZ\",\r\n    \"last_name\": \"sonsung100New17EZ\",\r\n    \"mobile\": \"1669\",\r\n    \"address\": \"257\",\r\n    \"type\": 0\r\n}",
+							"raw": "{\r\n    \"first_name\": \"kittanonAddress1\",\r\n    \"last_name\": \"sonsungAddress1\",\r\n    \"mobile\": \"1669\",\r\n    \"address\": \"257\",\r\n    \"type\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -216,7 +215,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/address/19",
+							"raw": "http://localhost:8080/address/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -224,7 +223,7 @@
 							"port": "8080",
 							"path": [
 								"address",
-								"19"
+								"1"
 							]
 						}
 					},
@@ -238,7 +237,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyNDUxODcsInVzZXJfaWQiOjM3LCJ1c2VybmFtZSI6IlJPODltYXJrMTIzQGdtYWlsLmNvbSJ9.FRazkdwHY2FbMKICcoUNKJLhRJypAQyF9zUtO9uaVuw",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyNzIxODQsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiUk84OW1hcmsxMjM0QGdtYWlsLmNvbSJ9.qqWA1KaCQOVu_1G4Xlgj2ooTyg-pxedrf3vxebMiJj4",
 									"type": "string"
 								}
 							]
@@ -267,7 +266,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcxNzMwNzMsInVzZXJfaWQiOjM3LCJ1c2VybmFtZSI6IlJPODltYXJrMTIzQGdtYWlsLmNvbSJ9.Z48GRBQTrDDixS8RclJo4SGQcJ5ODjtlAEpoUWdAXt0",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyNzIxODQsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiUk84OW1hcmsxMjM0QGdtYWlsLmNvbSJ9.qqWA1KaCQOVu_1G4Xlgj2ooTyg-pxedrf3vxebMiJj4",
 									"type": "string"
 								}
 							]
@@ -275,7 +274,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/address/14",
+							"raw": "http://localhost:8080/address/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -283,7 +282,7 @@
 							"port": "8080",
 							"path": [
 								"address",
-								"14"
+								"3"
 							]
 						}
 					},
@@ -371,7 +370,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/product/5",
+							"raw": "http://localhost:8080/product/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -379,7 +378,7 @@
 							"port": "8080",
 							"path": [
 								"product",
-								"5"
+								"1"
 							]
 						}
 					},
@@ -514,6 +513,80 @@
 							"path": [
 								"product",
 								"recommended"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favorite",
+			"item": [
+				{
+					"name": "favorite",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjczNDUxNTgsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiUk84OW1hcmsxMjM0QGdtYWlsLmNvbSJ9.DHML0EWVB2ytAMXPRsLlqSDeP7drOyhZKD_p1CUYxgI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product_id\": 2,\r\n    \"price\": 500.00,\r\n    \"quantity\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/product/favorite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"favorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "favorite",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjczNDUxNTgsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiUk84OW1hcmsxMjM0QGdtYWlsLmNvbSJ9.DHML0EWVB2ytAMXPRsLlqSDeP7drOyhZKD_p1CUYxgI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/product/favorite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"product",
+								"favorite"
 							]
 						}
 					},
