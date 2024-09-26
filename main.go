@@ -62,6 +62,10 @@ func main() {
 	favouriteService := service.NewFavoriteService(favouriteRepositoryDb)
 	favouriteHandler := handler.NewFavoriteHandler(favouriteService)
 
+	cartRepositoryDb := repository.NewCartRepositoryDb(db)
+	cartService := service.NewCartService(cartRepositoryDb)
+	cartHandler := handler.NewCartHandler(cartService)
+
 	e.Static("/static", "assets")
 
 	e.POST("/user/register", userHandler.UserRegister)
@@ -95,6 +99,9 @@ func main() {
 	r.POST("product/favorite", favouriteHandler.SaveFavorite)
 	r.GET("product/favorite", favouriteHandler.GetFavoriteByUserId)
 	r.DELETE("product/favorite/:id", favouriteHandler.DeleteFavoriteById)
+
+	r.POST("product/cart", cartHandler.SaveCart)
+	r.GET("product/cart", cartHandler.GetCartByUserId)
 
 	err := e.Start(":8080")
 
