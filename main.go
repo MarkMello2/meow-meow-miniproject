@@ -66,6 +66,10 @@ func main() {
 	cartService := service.NewCartService(cartRepositoryDb)
 	cartHandler := handler.NewCartHandler(cartService)
 
+	orderRepositoryDb := repository.NewOrderRepositoryDb(db)
+	orderService := service.NewOrderService(orderRepositoryDb)
+	orderHandler := handler.NewOrderHandler(orderService)
+
 	e.Static("/static", "assets")
 
 	e.POST("/user/register", userHandler.UserRegister)
@@ -102,6 +106,8 @@ func main() {
 
 	r.POST("product/cart", cartHandler.SaveCart)
 	r.GET("product/cart", cartHandler.GetCartByUserId)
+
+	r.POST("orders", orderHandler.SaveOrder)
 
 	err := e.Start(":8080")
 

@@ -13,7 +13,7 @@ func NewFavoriteRepositoryDb(gorm *gorm.DB) FavoriteRepository {
 }
 
 func (f favoriteRepositoryDb) GetById(id int) ([]FavoriteGet, error) {
-	sql := "select f.id, p.price, f.quantity, f.created_at, p.code, p.name, p.description , p.rating ,p.image, f.user_id from favorites as f inner join products p on f.product_id = p.id where f.user_id = ? and f.deleted_at IS NULL"
+	sql := "select f.id, f.price, f.quantity, f.created_at, p.code, p.name, p.description , p.rating ,p.image, f.user_id from favorites as f inner join products p on f.product_id = p.id where f.user_id = ? and f.deleted_at IS NULL"
 	condition := f.gorm.Raw(sql, id)
 	result := []FavoriteGet{}
 	err := condition.Find(&result).Error
