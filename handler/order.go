@@ -31,3 +31,14 @@ func (o orderHandler) SaveOrder(c echo.Context) error {
 
 	return c.String(http.StatusOK, "Product Order Successful")
 }
+
+func (o orderHandler) GetOrderByUserId(c echo.Context) error {
+	userId := c.Get("userId").(int)
+
+	res, err := o.orderSrv.GetOrderByUserId(userId)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, res)
+}

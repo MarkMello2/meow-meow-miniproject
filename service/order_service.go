@@ -3,6 +3,7 @@ package service
 import (
 	"meow-meow/repository"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 )
@@ -40,5 +41,29 @@ func (o orderService) SaveOrder(orderReq []OrderRequest, userId int) error {
 }
 
 func (o orderService) GetOrderByUserId(userId int) ([]OrderResponse, error) {
-	return nil, nil
+	pathImg := os.Getenv("IMG_PATH_LOCAL")
+
+	orderData, err := o.orderRepo.GetOrder(userId)
+	if err != nil {
+		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+	}
+
+	res := []OrderResponse{}
+
+	for _, v := range orderData {
+		res = append(res, OrderResponse{
+			Id:                 v.Id,
+			Price:              v.Price,
+			Quantity:           v.Quantity,
+			OrderDate:          v.OrderDate,
+			ProductCode:        v.ProductCode,
+			ProductName:        v.ProductName,
+			ProductDescription: v.ProductDescription,
+			ProductRating:      v.ProductRating,
+			ProductImage:       pathImg + v.ProductImage,
+			UserId:             v.UserId,
+		})
+	}
+
+	return res, nil
 }

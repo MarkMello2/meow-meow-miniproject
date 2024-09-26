@@ -108,6 +108,7 @@ func main() {
 	r.GET("product/cart", cartHandler.GetCartByUserId)
 
 	r.POST("orders", orderHandler.SaveOrder)
+	r.GET("orders", orderHandler.GetOrderByUserId)
 
 	err := e.Start(":8080")
 
