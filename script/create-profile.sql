@@ -3,7 +3,7 @@ CREATE TABLE profiles (
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     mobile VARCHAR(10),
-    sex VARCHAR(1) CHECK (sex IN ('M', 'F')),
+    sex VARCHAR(1) CHECK (sex IN ('M', 'F', 'O')),
     status VARCHAR(1) CHECK (status IN ('A', 'I')),
     image VARCHAR(255),
     user_id BIGINT NOT NULL REFERENCES users(id),

@@ -15,7 +15,7 @@ func NewUserRepository(gorm *gorm.DB) UsersRepository {
 	return usersRepositoryDb{gorm: gorm}
 }
 
-func (u usersRepositoryDb) CreateUser(userData User) (string, error) {
+func (u usersRepositoryDb) CreateUser(userData User) error {
 
 	code := uuid.New().String()
 
@@ -29,10 +29,10 @@ func (u usersRepositoryDb) CreateUser(userData User) (string, error) {
 	tx := u.gorm.Create(&users)
 
 	if tx.Error != nil {
-		return "", tx.Error
+		return tx.Error
 	}
 
-	return "create user successfully", nil
+	return nil
 }
 
 func (u usersRepositoryDb) GetUserByName(email string) ([]User, error) {

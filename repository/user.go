@@ -13,6 +13,6 @@ type User struct {
 }
 
 type UsersRepository interface {
-	CreateUser(User) (string, error)
+	CreateUser(User) error
 	GetUserByName(string) ([]User, error)
 }

@@ -30,13 +30,13 @@ func main() {
 
 	jwtSecret := os.Getenv("JWT_SECRET_KEY")
 
-	userRepositoryDb := repository.NewUserRepository(db)
-	userService := service.NewUserService(userRepositoryDb)
-	userHandler := handler.NewUserHandler(userService)
-
 	profileRepositoryDb := repository.NewProfileRepositoryDb(db)
 	profileService := service.NewProfielService(profileRepositoryDb)
 	profileHandler := handler.NewProfileHandler(profileService)
+
+	userRepositoryDb := repository.NewUserRepository(db)
+	userService := service.NewUserService(userRepositoryDb, profileService)
+	userHandler := handler.NewUserHandler(userService)
 
 	addressRepositoryDb := repository.NewAddressRepositoryDb(db)
 	addressService := service.NewAddressService(addressRepositoryDb)

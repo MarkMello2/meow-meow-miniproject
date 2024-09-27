@@ -15,23 +15,24 @@ import (
 )
 
 type userService struct {
-	userRepo repository.UsersRepository
+	userRepo       repository.UsersRepository
+	profileService ProfileService
 }
 
-func NewUserService(userRepo repository.UsersRepository) UserService {
-	return userService{userRepo: userRepo}
+func NewUserService(userRepo repository.UsersRepository, profileService ProfileService) UserService {
+	return userService{userRepo: userRepo, profileService: profileService}
 }
 
-func (u userService) CreateUser(userReq UserRequest) (string, error) {
+func (u userService) CreateUser(userReq UserRequest) error {
 
 	if len(strings.TrimSpace(userReq.Email)) == 0 || len(strings.TrimSpace(userReq.Password)) == 0 {
-		return "", echo.NewHTTPError(http.StatusBadRequest, "email and password is require")
+		return echo.NewHTTPError(http.StatusBadRequest, "email and password is require")
 	}
 
 	err := checkEmailIsDuplicate(userReq, u)
 
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	password := userReq.Password
@@ -39,7 +40,7 @@ func (u userService) CreateUser(userReq UserRequest) (string, error) {
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 
 	if err != nil {
-		return "", echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
 	}
 
 	user := repository.User{
@@ -47,13 +48,17 @@ func (u userService) CreateUser(userReq UserRequest) (string, error) {
 		Password: string(hashPassword),
 	}
 
-	result, err := u.userRepo.CreateUser(user)
-
+	err = u.userRepo.CreateUser(user)
 	if err != nil {
-		return "", echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
 	}
 
-	return result, nil
+	err = createDefaultProfile(u, userReq)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (u userService) UserLogin(userReq UserRequest) (*TokenResponse, error) {
@@ -132,6 +137,29 @@ func checkEmailIsDuplicate(userReq UserRequest, u userService) error {
 
 	if len(emailData) > 0 {
 		return echo.NewHTTPError(http.StatusBadRequest, "Email is exist")
+	}
+
+	return nil
+}
+
+func createDefaultProfile(u userService, userReq UserRequest) error {
+	userData, err := u.userRepo.GetUserByName(userReq.Email)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+	}
+
+	profileReq := ProfileRequest{
+		Sex: "O",
+	}
+
+	id := 0
+	for _, v := range userData {
+		id = v.Id
+	}
+
+	err = u.profileService.CreateUserProfile(profileReq, id, true)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
 	}
 
 	return nil

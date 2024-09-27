@@ -23,13 +23,13 @@ func (u userHandler) UserRegister(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
 
-	result, err := u.userSrv.CreateUser(user)
+	err = u.userSrv.CreateUser(user)
 
 	if err != nil {
 		return err
 	}
 
-	return c.String(http.StatusOK, result)
+	return c.String(http.StatusOK, "Sign-Up Successfully")
 }
 
 func (u userHandler) UserLogin(c echo.Context) error {

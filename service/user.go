@@ -18,6 +18,6 @@ type UserRequest struct {
 }
 
 type UserService interface {
-	CreateUser(UserRequest) (string, error)
+	CreateUser(UserRequest) error
 	UserLogin(UserRequest) (*TokenResponse, error)
 }

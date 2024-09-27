@@ -35,7 +35,7 @@ func (p profileHandler) CreateUserProfile(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
 
-	err = p.proSrv.CreateUserProfile(profileReq, id)
+	err = p.proSrv.CreateUserProfile(profileReq, id, false)
 	if err != nil {
 		return err
 	}

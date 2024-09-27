@@ -48,16 +48,16 @@ func (p profileService) GetProfileByUserId(userId int) (*ProfileResponse, error)
 	return &resProfile, nil
 }
 
-func (p profileService) CreateUserProfile(profileReq ProfileRequest, userId int) error {
-	if len(strings.TrimSpace(profileReq.FirstName)) == 0 || len(strings.TrimSpace(profileReq.LastName)) == 0 {
+func (p profileService) CreateUserProfile(profileReq ProfileRequest, userId int, isInitPro bool) error {
+	if (len(strings.TrimSpace(profileReq.FirstName)) == 0 || len(strings.TrimSpace(profileReq.LastName)) == 0) && !isInitPro {
 		return echo.NewHTTPError(http.StatusBadRequest, "FirstName and LastName is require")
 	}
 
-	if utf8.RuneCountInString(profileReq.Mobile) > 10 {
+	if utf8.RuneCountInString(profileReq.Mobile) > 10 && !isInitPro {
 		return echo.NewHTTPError(http.StatusBadRequest, "Phone number is too long. It should not exceed 10 digits.")
 	}
 
-	if profileReq.Sex != "M" && profileReq.Sex != "F" {
+	if profileReq.Sex != "M" && profileReq.Sex != "F" && !isInitPro {
 		return echo.NewHTTPError(http.StatusBadRequest, "Sex is require and should M or F")
 	}
 
