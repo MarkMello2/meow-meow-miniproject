@@ -49,7 +49,7 @@ func main() {
 	addressHandler := handler.NewAddressHandler(addressService)
 
 	categoryRepositoryDb := repository.NewCategoryRepositoryDb(db)
-	categoryService := service.NewCategoryService(categoryRepositoryDb)
+	categoryService := service.NewCategoryService(categoryRepositoryDb, minioService)
 	categoryHandler := handler.NewCategoryHandler(categoryService)
 
 	productRepositoryDb := repository.NewProductRepositoryDb(db)
