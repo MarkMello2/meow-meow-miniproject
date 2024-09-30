@@ -4,22 +4,21 @@ import (
 	"errors"
 	"meow-meow/repository"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
 type productService struct {
-	proRepo repository.ProductRepository
+	proRepo  repository.ProductRepository
+	minioSrv MinioService
 }
 
-func NewProductService(proRepo repository.ProductRepository) ProductService {
-	return productService{proRepo: proRepo}
+func NewProductService(proRepo repository.ProductRepository, minioSrv MinioService) ProductService {
+	return productService{proRepo: proRepo, minioSrv: minioSrv}
 }
 
 func (p productService) GetAllProduct() ([]ProductResponse, error) {
-	pathImg := os.Getenv("IMG_PATH_LOCAL")
 
 	productDataDb, err := p.proRepo.GetAll()
 	if err != nil {
@@ -29,6 +28,12 @@ func (p productService) GetAllProduct() ([]ProductResponse, error) {
 	res := []ProductResponse{}
 
 	for _, data := range productDataDb {
+		newUrlImg, err := p.minioSrv.getUrlImagePath(data.Image)
+
+		if err != nil {
+			return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		}
+
 		res = append(res, ProductResponse{
 			Id:          data.Id,
 			Code:        data.Code,
@@ -36,17 +41,16 @@ func (p productService) GetAllProduct() ([]ProductResponse, error) {
 			Description: data.Description,
 			Price:       data.Price,
 			Rating:      data.Rating,
-			Image:       pathImg + data.Image,
+			Image:       newUrlImg,
 			CategoryId:  data.CategoryId,
 			MallId:      data.MallId,
 		})
 	}
+
 	return res, nil
 }
 
 func (p productService) GetProductById(productId int) ([]ProductResponse, error) {
-	pathImg := os.Getenv("IMG_PATH_LOCAL")
-
 	productDataDb, err := p.proRepo.GetById(productId)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -58,6 +62,12 @@ func (p productService) GetProductById(productId int) ([]ProductResponse, error)
 	res := []ProductResponse{}
 
 	for _, data := range productDataDb {
+		newUrlImg, err := p.minioSrv.getUrlImagePath(data.Image)
+
+		if err != nil {
+			return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		}
+
 		res = append(res, ProductResponse{
 			Id:          data.Id,
 			Code:        data.Code,
@@ -65,7 +75,7 @@ func (p productService) GetProductById(productId int) ([]ProductResponse, error)
 			Description: data.Description,
 			Price:       data.Price,
 			Rating:      data.Rating,
-			Image:       pathImg + data.Image,
+			Image:       newUrlImg,
 			CategoryId:  data.CategoryId,
 			MallId:      data.MallId,
 		})
@@ -75,8 +85,6 @@ func (p productService) GetProductById(productId int) ([]ProductResponse, error)
 }
 
 func (p productService) GetProductByCategoryId(categoryId int) ([]ProductResponse, error) {
-	pathImg := os.Getenv("IMG_PATH_LOCAL")
-
 	productDataDb, err := p.proRepo.GetByCategoryId(categoryId)
 	if err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
@@ -85,6 +93,12 @@ func (p productService) GetProductByCategoryId(categoryId int) ([]ProductRespons
 	res := []ProductResponse{}
 
 	for _, data := range productDataDb {
+		newUrlImg, err := p.minioSrv.getUrlImagePath(data.Image)
+
+		if err != nil {
+			return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		}
+
 		res = append(res, ProductResponse{
 			Id:          data.Id,
 			Code:        data.Code,
@@ -92,7 +106,7 @@ func (p productService) GetProductByCategoryId(categoryId int) ([]ProductRespons
 			Description: data.Description,
 			Price:       data.Price,
 			Rating:      data.Rating,
-			Image:       pathImg + data.Image,
+			Image:       newUrlImg,
 			CategoryId:  data.CategoryId,
 			MallId:      data.MallId,
 		})
@@ -101,8 +115,6 @@ func (p productService) GetProductByCategoryId(categoryId int) ([]ProductRespons
 }
 
 func (p productService) GetProductByMallId(mallId int) ([]ProductResponse, error) {
-	pathImg := os.Getenv("IMG_PATH_LOCAL")
-
 	productDataDb, err := p.proRepo.GetByMallId(mallId)
 	if err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
@@ -111,6 +123,12 @@ func (p productService) GetProductByMallId(mallId int) ([]ProductResponse, error
 	res := []ProductResponse{}
 
 	for _, data := range productDataDb {
+		newUrlImg, err := p.minioSrv.getUrlImagePath(data.Image)
+
+		if err != nil {
+			return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		}
+
 		res = append(res, ProductResponse{
 			Id:          data.Id,
 			Code:        data.Code,
@@ -118,7 +136,7 @@ func (p productService) GetProductByMallId(mallId int) ([]ProductResponse, error
 			Description: data.Description,
 			Price:       data.Price,
 			Rating:      data.Rating,
-			Image:       pathImg + data.Image,
+			Image:       newUrlImg,
 			CategoryId:  data.CategoryId,
 			MallId:      data.MallId,
 		})
@@ -127,8 +145,6 @@ func (p productService) GetProductByMallId(mallId int) ([]ProductResponse, error
 }
 
 func (p productService) GetProductRecommended() ([]ProductResponseRec, error) {
-	pathImg := os.Getenv("IMG_PATH_LOCAL")
-
 	productDataDb, err := p.proRepo.GetRecommended()
 	if err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
@@ -137,6 +153,12 @@ func (p productService) GetProductRecommended() ([]ProductResponseRec, error) {
 	res := []ProductResponseRec{}
 
 	for _, data := range productDataDb {
+		newUrlImg, err := p.minioSrv.getUrlImagePath(data.Image)
+
+		if err != nil {
+			return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		}
+
 		res = append(res, ProductResponseRec{
 			Id:          data.Id,
 			Code:        data.Code,
@@ -144,7 +166,7 @@ func (p productService) GetProductRecommended() ([]ProductResponseRec, error) {
 			Description: data.Description,
 			Price:       data.Price,
 			Rating:      data.Rating,
-			Image:       pathImg + data.Image,
+			Image:       newUrlImg,
 		})
 	}
 	return res, nil

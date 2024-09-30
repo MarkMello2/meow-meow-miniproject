@@ -12,6 +12,8 @@ import (
 	"github.com/joho/godotenv"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/minio/minio-go/v7"
+	"github.com/minio/minio-go/v7/pkg/credentials"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -28,7 +30,11 @@ func main() {
 
 	db := initDatabase()
 
+	minioClient := initMinio()
+
 	jwtSecret := os.Getenv("JWT_SECRET_KEY")
+
+	minioService := service.NewMinioService(minioClient)
 
 	profileRepositoryDb := repository.NewProfileRepositoryDb(db)
 	profileService := service.NewProfielService(profileRepositoryDb)
@@ -47,7 +53,7 @@ func main() {
 	categoryHandler := handler.NewCategoryHandler(categoryService)
 
 	productRepositoryDb := repository.NewProductRepositoryDb(db)
-	productService := service.NewProductService(productRepositoryDb)
+	productService := service.NewProductService(productRepositoryDb, minioService)
 	productHandler := handler.NewProductHandler(productService)
 
 	mallRepositoryDb := repository.NewMallRepositoryDb(db)
@@ -128,6 +134,24 @@ func initDatabase() *gorm.DB {
 	}
 
 	return db
+}
+
+func initMinio() *minio.Client {
+	endpoint := os.Getenv("MINIO_ENDPOINT")
+	accessKeyID := os.Getenv("MINIO_ID")
+	secretAccessKey := os.Getenv("MINIO_SECRET_KEY")
+	useSSL := true
+
+	minioClient, err := minio.New(endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
+		Secure: useSSL,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	return minioClient
 }
 
 func userIDMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
