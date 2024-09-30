@@ -3,17 +3,17 @@ package service
 import (
 	"meow-meow/repository"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
 )
 
 type cartService struct {
 	cartRepo repository.CartRepository
+	minioSrv MinioService
 }
 
-func NewCartService(cartRepo repository.CartRepository) CartService {
-	return cartService{cartRepo: cartRepo}
+func NewCartService(cartRepo repository.CartRepository, minioSrv MinioService) CartService {
+	return cartService{cartRepo: cartRepo, minioSrv: minioSrv}
 }
 
 func (c cartService) SaveCart(cartReq []CartRequest, userId int) error {
@@ -43,8 +43,6 @@ func (c cartService) SaveCart(cartReq []CartRequest, userId int) error {
 }
 
 func (c cartService) GetCartByUserId(userId int) ([]CartResponse, error) {
-	pathImg := os.Getenv("IMG_PATH_LOCAL")
-
 	cartData, err := c.cartRepo.GetCart(userId)
 	if err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
@@ -53,6 +51,12 @@ func (c cartService) GetCartByUserId(userId int) ([]CartResponse, error) {
 	res := []CartResponse{}
 
 	for _, v := range cartData {
+		newUrlImg, err := c.minioSrv.getUrlImagePath(v.ProductImage)
+
+		if err != nil {
+			return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		}
+
 		res = append(res, CartResponse{
 			Id:                 v.Id,
 			Price:              v.Price,
@@ -62,7 +66,7 @@ func (c cartService) GetCartByUserId(userId int) ([]CartResponse, error) {
 			ProductName:        v.ProductName,
 			ProductDescription: v.ProductDescription,
 			ProductRating:      v.ProductRating,
-			ProductImage:       pathImg + v.ProductImage,
+			ProductImage:       newUrlImg,
 			UserId:             v.UserId,
 		})
 	}

@@ -65,15 +65,15 @@ func main() {
 	bannerHandler := handler.NewBannerHandler(bannerService)
 
 	favouriteRepositoryDb := repository.NewFavoriteRepositoryDb(db)
-	favouriteService := service.NewFavoriteService(favouriteRepositoryDb)
+	favouriteService := service.NewFavoriteService(favouriteRepositoryDb, minioService)
 	favouriteHandler := handler.NewFavoriteHandler(favouriteService)
 
 	cartRepositoryDb := repository.NewCartRepositoryDb(db)
-	cartService := service.NewCartService(cartRepositoryDb)
+	cartService := service.NewCartService(cartRepositoryDb, minioService)
 	cartHandler := handler.NewCartHandler(cartService)
 
 	orderRepositoryDb := repository.NewOrderRepositoryDb(db)
-	orderService := service.NewOrderService(orderRepositoryDb)
+	orderService := service.NewOrderService(orderRepositoryDb, minioService)
 	orderHandler := handler.NewOrderHandler(orderService)
 
 	e.Static("/static", "assets")

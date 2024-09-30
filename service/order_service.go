@@ -3,17 +3,17 @@ package service
 import (
 	"meow-meow/repository"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
 )
 
 type orderService struct {
 	orderRepo repository.OrderRepository
+	minioSrv  MinioService
 }
 
-func NewOrderService(orderRepo repository.OrderRepository) OrderService {
-	return orderService{orderRepo: orderRepo}
+func NewOrderService(orderRepo repository.OrderRepository, minioSrv MinioService) OrderService {
+	return orderService{orderRepo: orderRepo, minioSrv: minioSrv}
 }
 
 func (o orderService) SaveOrder(orderReq []OrderRequest, userId int) error {
@@ -41,8 +41,6 @@ func (o orderService) SaveOrder(orderReq []OrderRequest, userId int) error {
 }
 
 func (o orderService) GetOrderByUserId(userId int) ([]OrderResponse, error) {
-	pathImg := os.Getenv("IMG_PATH_LOCAL")
-
 	orderData, err := o.orderRepo.GetOrder(userId)
 	if err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
@@ -51,6 +49,12 @@ func (o orderService) GetOrderByUserId(userId int) ([]OrderResponse, error) {
 	res := []OrderResponse{}
 
 	for _, v := range orderData {
+		newUrlImg, err := o.minioSrv.getUrlImagePath(v.ProductImage)
+
+		if err != nil {
+			return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		}
+
 		res = append(res, OrderResponse{
 			Id:                 v.Id,
 			Price:              v.Price,
@@ -60,7 +64,7 @@ func (o orderService) GetOrderByUserId(userId int) ([]OrderResponse, error) {
 			ProductName:        v.ProductName,
 			ProductDescription: v.ProductDescription,
 			ProductRating:      v.ProductRating,
-			ProductImage:       pathImg + v.ProductImage,
+			ProductImage:       newUrlImg,
 			UserId:             v.UserId,
 		})
 	}

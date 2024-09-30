@@ -3,22 +3,20 @@ package service
 import (
 	"meow-meow/repository"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
 )
 
 type favoriteService struct {
-	favRepo repository.FavoriteRepository
+	favRepo  repository.FavoriteRepository
+	minioSrv MinioService
 }
 
-func NewFavoriteService(favRepo repository.FavoriteRepository) FavoriteService {
-	return favoriteService{favRepo: favRepo}
+func NewFavoriteService(favRepo repository.FavoriteRepository, minioSrv MinioService) FavoriteService {
+	return favoriteService{favRepo: favRepo, minioSrv: minioSrv}
 }
 
 func (f favoriteService) GetFavoriteByUserId(userId int) ([]FavoriteResponse, error) {
-	pathImg := os.Getenv("IMG_PATH_LOCAL")
-
 	favData, err := f.favRepo.GetById(userId)
 	if err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
@@ -27,6 +25,12 @@ func (f favoriteService) GetFavoriteByUserId(userId int) ([]FavoriteResponse, er
 	res := []FavoriteResponse{}
 
 	for _, v := range favData {
+		newUrlImg, err := f.minioSrv.getUrlImagePath(v.ProductImage)
+
+		if err != nil {
+			return nil, echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
+		}
+
 		res = append(res, FavoriteResponse{
 			Id:                 v.Id,
 			Price:              v.Price,
@@ -36,7 +40,7 @@ func (f favoriteService) GetFavoriteByUserId(userId int) ([]FavoriteResponse, er
 			ProductName:        v.ProductName,
 			ProductDescription: v.ProductDescription,
 			ProductRating:      v.ProductRating,
-			ProductImage:       pathImg + v.ProductImage,
+			ProductImage:       newUrlImg,
 			UserId:             v.UserId,
 		})
 	}
