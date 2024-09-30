@@ -57,11 +57,11 @@ func main() {
 	productHandler := handler.NewProductHandler(productService)
 
 	mallRepositoryDb := repository.NewMallRepositoryDb(db)
-	mallService := service.NewMallService(mallRepositoryDb)
+	mallService := service.NewMallService(mallRepositoryDb, minioService)
 	mallHandler := handler.NewMallHandler(mallService)
 
 	bannerRepositoryDb := repository.NewBannerRepositoryDb(db)
-	bannerService := service.NewBannerService(bannerRepositoryDb)
+	bannerService := service.NewBannerService(bannerRepositoryDb, minioService)
 	bannerHandler := handler.NewBannerHandler(bannerService)
 
 	favouriteRepositoryDb := repository.NewFavoriteRepositoryDb(db)
