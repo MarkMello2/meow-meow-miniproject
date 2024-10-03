@@ -1,14 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"meow-meow/handler"
+	"meow-meow/middleware"
 	"meow-meow/repository"
 	"meow-meow/service"
 	"net/http"
 	"os"
 
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
@@ -96,7 +97,7 @@ func main() {
 	r := e.Group("/")
 
 	r.Use(echojwt.JWT([]byte(jwtSecret)))
-	r.Use(userIDMiddleware)
+	r.Use(middleware.UserIDMiddleware)
 
 	r.GET("profile", profileHandler.GetProfileById)
 	r.PATCH("profile", profileHandler.CreateUserProfile)
@@ -125,12 +126,18 @@ func main() {
 
 func initDatabase() *gorm.DB {
 
-	dsn := "host=localhost user=user password=password dbname=shopping_db port=5432 sslmode=disable TimeZone=Asia/Bangkok"
+	host := os.Getenv("LOCAL_DB_HOST")
+	user := os.Getenv("LOCAL_DB_USER")
+	password := os.Getenv("LOCAL_DB_PASSWORD")
+	dbName := os.Getenv("LOCAL_DB_NAME")
+	port := os.Getenv("LOCAL_DB_PORT")
+
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Bangkok", host, user, password, dbName, port)
 	dial := postgres.Open(dsn)
 	db, err := gorm.Open(dial)
 
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	return db
@@ -148,26 +155,10 @@ func initMinio() *minio.Client {
 	})
 
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	return minioClient
-}
-
-func userIDMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		user := c.Get("user").(*jwt.Token)
-		claims := user.Claims.(jwt.MapClaims)
-		userId, ok := claims["user_id"].(float64)
-
-		if !ok {
-			return echo.NewHTTPError(http.StatusInternalServerError, "Internal Server Error")
-		}
-
-		c.Set("userId", int(userId))
-
-		return next(c)
-	}
 }
 
 func initEnv() {
